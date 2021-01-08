@@ -10,8 +10,17 @@ app.get("/", (req, res)=>{
     res.send("Hello World! (from express)")
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port, ()=>{
-    console.log(`server listening on port {port}`);
-}, err => { console.error(err)});
+// API
+const usersRoute = require("./routes/api/users")
+app.use("/api/users", usersRoute);
 
+const port = process.env.PORT || 5000;
+app.listen(
+  port,
+  () => {
+    console.log(`server listening on port {port}`);
+  },
+  (err) => {
+    console.error(err);
+  }
+);
