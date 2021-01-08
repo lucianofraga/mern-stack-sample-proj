@@ -6,10 +6,10 @@ POST http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": 123,
-    "name": "Luciano test 123",
+    "id": 1234,
+    "name": "Luciano test 1234",
     "age": 37
 }
 
 ###
-DELETE http://localhost:5000/api/users/3
+DELETE http://localhost:5000/api/users/5ff8b44b9a0a1e694c774122

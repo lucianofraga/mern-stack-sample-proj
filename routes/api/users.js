@@ -1,43 +1,32 @@
 const express = require("express");
 const router = express.Router();
-
-let mockUsers = [
-  {
-    id: 1,
-    name: "Luciano user 1",
-    age: 37,
-  },
-  {
-    id: 2,
-    name: "Luciano user 2",
-    age: 37,
-  },
-  {
-    id: 3,
-    name: "Luciano user 3",
-    age: 37,
-  },
-];
+const User = require("../../models/user");
 
 router.get("/", (req, res) => {
-  res.json(mockUsers);
+  User.find()
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.post("/", (req, res) => {
-  const newUser = req.body;
-  mockUsers.push(newUser);
-  res.status(200).json(mockUsers);
+  const newUser = new User({ ...req.body });
+  newUser
+    .save()
+    .then((success) => res.status(201).json(newUser))
+    .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.delete("/:id", (req, res) => {
-  const userToDelete = mockUsers.find(
-    (usr) => usr.id === parseInt(req.params.id)
-  );
-  if (userToDelete) {
-    mockUsers = mockUsers.filter((usr) => usr.id !== parseInt(req.params.id));
-    res.status(204).json(userToDelete);
-  } else {
-    res.status(404).json({ message: "User not found" });
-  }
+  const userToDelete = User.findById(req.params.id)
+    .then((usr) => {
+      usr
+        .remove()
+        .then((success) => res.status(204).json({ success: true }))
+        .catch((err) => res.status(500).json({ success: false }));
+    })
+    .catch((err) => res.status(500).json({ success: false }));
 });
+
 module.exports = router;
