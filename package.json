@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client-install": "cd client && npm install",
-    "client": "cd client && npm start",
+    "client-install": "npm install --prefix ./client",
+    "client": "npm start --prefix ./client",
     "dev-start": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
