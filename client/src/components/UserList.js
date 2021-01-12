@@ -2,18 +2,18 @@ import React from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { v4 as uuid } from "uuid";
 
+import { connect } from "react-redux";
+import { getUsers } from "../actions/userActions";
+
+import PropTypes from "prop-types";
+
 class UserList extends React.Component {
-  state = {
-    users: [
-      { id: uuid(), name: "User 1", age: 37 },
-      { id: uuid(), name: "User 2", age: 30 },
-      { id: uuid(), name: "User 3", age: 21 },
-      { id: uuid(), name: "User 4", age: 44 },
-      { id: uuid(), name: "User 5", age: 80 },
-    ],
-  };
+  componentDidMount() {
+    this.props.getUsers();
+  }
 
   render() {
+    const { users } = this.props.user;
     return (
       <Container>
         <Button
@@ -34,7 +34,7 @@ class UserList extends React.Component {
         </Button>
 
         <ListGroup>
-          {this.state.users.map(({ name, id }) => (
+          {users.map(({ name, id }) => (
             <ListGroupItem>
               <Button
                 className="btn btn-danger btn-sm"
@@ -57,4 +57,13 @@ class UserList extends React.Component {
   }
 }
 
-export default UserList;
+UserList.propTypes = {
+  getUsers: PropTypes.func.isRequired,
+  users: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { getUsers })(UserList);
