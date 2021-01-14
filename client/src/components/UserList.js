@@ -1,9 +1,8 @@
 import React from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
-import { v4 as uuid } from "uuid";
 
 import { connect } from "react-redux";
-import { getUsers } from "../actions/userActions";
+import { getUsers, deleteUser } from "../actions/userActions";
 
 import PropTypes from "prop-types";
 
@@ -12,39 +11,20 @@ class UserList extends React.Component {
     this.props.getUsers();
   }
 
+  onDeleteClick = (id) => {
+    this.props.deleteUser(id);
+  };
+
   render() {
     const { users } = this.props.user;
     return (
       <Container>
-        <Button
-          color="dark"
-          style={{ marginBotton: "2rem" }}
-          onClick={() => {
-            const name = prompt("Enter the Name");
-            if (name) {
-              this.setState((state) => {
-                return {
-                  users: [...state.users, { id: uuid(), name, age: 30 }],
-                };
-              });
-            }
-          }}
-        >
-          Add User
-        </Button>
-
         <ListGroup>
-          {users.map(({ name, id }) => (
-            <ListGroupItem>
+          {users.map(({ name, id }, idx) => (
+            <ListGroupItem key={idx}>
               <Button
                 className="btn btn-danger btn-sm"
-                onClick={() => {
-                  this.setState((state) => {
-                    return {
-                      users: state.users.filter((usr) => usr.id !== id),
-                    };
-                  });
-                }}
+                onClick={this.onDeleteClick.bind(this, id)}
               >
                 &times;
               </Button>
@@ -59,11 +39,11 @@ class UserList extends React.Component {
 
 UserList.propTypes = {
   getUsers: PropTypes.func.isRequired,
-  users: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  user: state.users,
 });
 
-export default connect(mapStateToProps, { getUsers })(UserList);
+export default connect(mapStateToProps, { getUsers, deleteUser })(UserList);
