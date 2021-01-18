@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addUser } from "../actions/userActions";
-import { v4 as uuid } from "uuid";
 import {
   Button,
   Modal,
@@ -30,7 +29,6 @@ class UserModal extends React.Component {
     e.preventDefault();
 
     const newUser = {
-      id: uuid(),
       name: this.state.name,
     };
 

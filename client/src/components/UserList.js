@@ -20,11 +20,11 @@ class UserList extends React.Component {
     return (
       <Container>
         <ListGroup>
-          {users.map(({ name, id }, idx) => (
+          {users.map(({ name, _id }, idx) => (
             <ListGroupItem key={idx}>
               <Button
                 className="btn btn-danger btn-sm"
-                onClick={this.onDeleteClick.bind(this, id)}
+                onClick={this.onDeleteClick.bind(this, _id)}
               >
                 &times;
               </Button>

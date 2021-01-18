@@ -1,15 +1,12 @@
-import { v4 as uuid } from "uuid";
-import { GET_USERS, ADD_USER, DELETE_USER } from "../actions/types";
+import {
+  GET_USERS,
+  ADD_USER,
+  DELETE_USER,
+  SET_LOADING,
+} from "../actions/types";
 
 const initialState = {
-  users: [
-    { id: uuid(), name: "User 1", age: 37 },
-    { id: uuid(), name: "User 2", age: 30 },
-    { id: uuid(), name: "User 3", age: 21 },
-    { id: uuid(), name: "User 4", age: 44 },
-    { id: uuid(), name: "User 5", age: 80 },
-    { id: uuid(), name: "User 6", age: 80 },
-  ],
+  users: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -17,18 +14,26 @@ export default function userReducer(state = initialState, action) {
     case GET_USERS:
       return {
         ...state,
+        users: action.payload,
+        loading: false,
       };
 
     case DELETE_USER:
       return {
         ...state,
-        users: state.users.filter((p) => p.id !== action.payload),
+        users: state.users.filter((p) => p._id !== action.payload),
       };
 
     case ADD_USER:
       return {
         ...state,
         users: [...state.users, action.payload],
+      };
+
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true,
       };
 
     default:
